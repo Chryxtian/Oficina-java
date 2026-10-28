@@ -80,26 +80,81 @@ public class Main{
 
             case 2:
                 System.out.println("Consultar ordens de serviço");
+                System.out.println("1 - Listar todas ");
+                System.out.println("2 - buscar por numero");
+                System.out.println("3 - Menu inicial");
 
-                for (WorkOrder registeredWorkOrder : workOrders) {
-                    Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
+                int consultaOption = keyboard.nextInt();
+                keyboard.nextLine();
+
+                switch (consultaOption){
+
+                    case 1:
+                        for (WorkOrder registeredWorkOrder : workOrders) {
+                            Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
 
 
 
-                    System.out.println("Proprietário: " +registeredVehicle.getOwner().getName());
-                    System.out.println("Telefone: " +registeredVehicle.getOwner().getPhone());
-                    System.out.println("Marca do veículo: " +registeredVehicle.getBrand());
-                    System.out.println("Modelo do veículo: " +registeredVehicle.getModel());
-                    System.out.println("Placa do veículo: " +registeredVehicle.getLicensePlate());
-                    System.out.println("Ano do veículo: " +registeredVehicle.getYear());
-                    System.out.println("Relato do cliente: " +registeredWorkOrder.getComplaint());
-                    System.out.println("Status da ordem: " +registeredWorkOrder.getStatus());
-                    System.out.println("Número da ordem: " +registeredWorkOrder.getNumber());
-                    System.out.println(" ");
+                            System.out.println("Proprietário: " +registeredVehicle.getOwner().getName());
+                            System.out.println("Telefone: " +registeredVehicle.getOwner().getPhone());
+                            System.out.println("Marca do veículo: " +registeredVehicle.getBrand());
+                            System.out.println("Modelo do veículo: " +registeredVehicle.getModel());
+                            System.out.println("Placa do veículo: " +registeredVehicle.getLicensePlate());
+                            System.out.println("Ano do veículo: " +registeredVehicle.getYear());
+                            System.out.println("Relato do cliente: " +registeredWorkOrder.getComplaint());
+                            System.out.println("Status da ordem: " +registeredWorkOrder.getStatus());
+                            System.out.println("Número da ordem: " +registeredWorkOrder.getNumber());
+                            System.out.println(" ");
+
+                        }
+
+                        break;
+
+                    case 2:
+                        System.out.println("Numero da ordem: ");
+                        int orderNumber = keyboard.nextInt();
+
+                        boolean orderFound = false;
+
+                        for (WorkOrder registeredWorkOrder : workOrders){
+                            if (registeredWorkOrder.getNumber() == orderNumber  ){
+                                System.out.println("Ordem encontrada");
+
+                                Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
+                                System.out.println("Proprietário: " +registeredVehicle.getOwner().getName());
+                                System.out.println("Telefone: " +registeredVehicle.getOwner().getPhone());
+                                System.out.println("Marca: " +registeredVehicle.getBrand());
+                                System.out.println("Modelo: " +registeredVehicle.getModel());
+                                System.out.println("Placa: " +registeredVehicle.getLicensePlate());
+                                System.out.println("Ano: " +registeredVehicle.getYear());
+                                System.out.println("Relato: " +registeredWorkOrder.getComplaint());
+                                System.out.println("Status: " +registeredWorkOrder.getStatus());
+                                System.out.println("Número da ordem: " +registeredWorkOrder.getNumber());
+
+                            orderFound = true;
+                            break;
+                        }
+                            break;
+
+                        }
+                        if (!orderFound){
+                            System.out.println("Ordem não encontrada.");
+                        }
+
+                        break;
+
+                    case 3:
+                        System.out.println("Voltando ao menu inicial.");
+                        break;
+
+                    default:
+                        System.out.println("Opção inválida");
+
 
                 }
-
                 break;
+
+
 
             case 3:
                 System.out.println("Digite o número da ordem ");
