@@ -7,7 +7,7 @@ public class Main{
     public static void main(String[] args) {
 
         Scanner keyboard = new Scanner(System.in);
-        String awnser;
+        String answer;
 
 
         System.out.println("-----Sistema da oficina-----");
@@ -32,7 +32,7 @@ public class Main{
 
 
                 do {
-                    System.out.println("Cadastro de cliente");
+                    System.out.println("Cadastro atendimento");
 
 
                     System.out.print("Nome: ");
@@ -71,15 +71,15 @@ public class Main{
 
 
                     System.out.println("Deseja cadastrar outro cliente ? (s/n) ");
-                    awnser = keyboard.nextLine();
+                    answer = keyboard.nextLine();
 
-                } while (awnser.equalsIgnoreCase("s"));
+                } while (answer.equalsIgnoreCase("s"));
 
                 break;
 
 
             case 2:
-                System.out.println("Consultar ordens de seviço");
+                System.out.println("Consultar ordens de serviço");
 
                 for (WorkOrder registeredWorkOrder : workOrders) {
                     Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
@@ -113,11 +113,57 @@ public class Main{
                     if (registeredWorkOrder.getNumber() == selectedOrderNumber){
                         System.out.println("Ordem localizada. Status atual: " +registeredWorkOrder.getStatus());
 
-                        System.out.println("Digite o novo status ");
-                        String newStatus = keyboard.nextLine();
 
-                        registeredWorkOrder.setStatus(newStatus);
-                        System.out.println("Status atualizado.");
+                        System.out.println("Digite o novo status ");
+                        System.out.println("1 - Em diagnóstico");
+                        System.out.println("2 - Aguardando aprovação");
+                        System.out.println("3 - Aprovada");
+                        System.out.println("4 - Orçamento recusado");
+                        System.out.println("5 - Em execução");
+                        System.out.println("6 - Concluída");
+
+                        int statusOption = keyboard.nextInt();
+                        keyboard.nextLine();
+
+                        String newStatus = null;
+
+                        switch (statusOption){
+
+                            case 1:
+                                newStatus = "Em diagnóstico";
+                                break;
+
+                            case 2:
+                                newStatus = "Aguardando aprovação";
+                                break;
+
+                            case 3:
+                                newStatus = "Aprovada";
+                                break;
+
+                            case 4:
+                                newStatus = "Orçamento recusado";
+                                break;
+
+                            case 5:
+                                newStatus = "Em execução";
+                                break;
+
+                            case 6:
+                                newStatus = "Concluída";
+                                break;
+
+                            default:
+                                System.out.println("Opção inválida, status não alterado");
+                        }
+
+                        if (newStatus!=null){
+                            registeredWorkOrder.setStatus(newStatus);
+                            System.out.println("Status alterado para: " +newStatus);
+                        }
+
+
+
 
                         orderFound = true;
 
