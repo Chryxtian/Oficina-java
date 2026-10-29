@@ -186,10 +186,13 @@ public class Main{
                             if (!customerFound) {
                                 System.out.println("Nenhuma ordem encontrada para esse cliente.");
                             }
+
                             System.out.println("Deseja fazer outra busca ? (S/N)");
                             answerNewSearch = keyboard.nextLine();
 
+
                         }while (answerNewSearch.equalsIgnoreCase("S"));
+                        break;
 
                     case 4:
                         System.out.println("Voltando ao menu inicial.");
