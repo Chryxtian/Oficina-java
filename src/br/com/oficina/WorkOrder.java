@@ -6,6 +6,7 @@ public class WorkOrder {
         private String complaint;
         private String status;
         private int number;
+        private String diagnosis;
 
 
 
@@ -19,6 +20,7 @@ public class WorkOrder {
         }
 
         public Vehicle getVehicle(){
+
             return vehicle;
         }
 
@@ -29,6 +31,7 @@ public class WorkOrder {
         }
 
         public String getStatus() {
+
             return status;
         }
 
@@ -39,4 +42,13 @@ public class WorkOrder {
         public void setStatus(String status){
             this.status = status;
         }
+
+        public String getDiagnosis() {
+            return diagnosis;
+        }
+
+        public void setDiagnosis(String diagnosis){
+            this.diagnosis = diagnosis;
+        }
+
 }
