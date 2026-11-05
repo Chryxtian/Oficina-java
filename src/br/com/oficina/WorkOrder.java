@@ -7,6 +7,8 @@ public class WorkOrder {
         private String status;
         private int number;
         private String diagnosis;
+        private String service;
+        private String partsNeeded;
 
 
 
@@ -40,6 +42,7 @@ public class WorkOrder {
         }
 
         public void setStatus(String status){
+
             this.status = status;
         }
 
@@ -51,4 +54,19 @@ public class WorkOrder {
             this.diagnosis = diagnosis;
         }
 
+        public String getService(){
+            return service;
+        }
+
+        public void setService(String service) {
+            this.service = service;
+        }
+
+        public String getPartsNeeded(){
+            return partsNeeded;
+        }
+
+        public void setPartsNeeded(String partsNeeded) {
+            this.partsNeeded = partsNeeded;
+        }
 }

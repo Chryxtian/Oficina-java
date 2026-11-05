@@ -67,8 +67,12 @@ public class Main{
 
                     WorkOrder workOrder = new WorkOrder(nextWorkOrderNumber, vehicle, complaint);
                     workOrders.add(workOrder);
-                    nextWorkOrderNumber ++;
 
+                    System.out.println("Cadastro concluído.");
+                    System.out.println("Número da ordem: " +workOrder.getNumber());
+                    System.out.println("Status atual: " +workOrder.getStatus());
+
+                    nextWorkOrderNumber ++;
 
                     System.out.println("Deseja cadastrar outro cliente ? (S/N) ");
                     answer = keyboard.nextLine();
@@ -115,6 +119,14 @@ public class Main{
 
                                 if (registeredWorkOrder.getDiagnosis()!= null){
                                     System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
+                                }
+
+                                if (registeredWorkOrder.getService()!=null){
+                                    System.out.println("Serviço recomendando: " +registeredWorkOrder.getService());
+                                }
+
+                                if (registeredWorkOrder.getPartsNeeded()!=null){
+                                    System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
                                 }
 
                                 System.out.println(" ");
@@ -165,6 +177,14 @@ public class Main{
                                         System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
                                     }
 
+                                    if (registeredWorkOrder.getService()!=null){
+                                        System.out.println("Serviço recomendado: " +registeredWorkOrder.getService());
+                                    }
+
+                                    if (registeredWorkOrder.getPartsNeeded()!=null){
+                                        System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
+                                    }
+
                                     System.out.println("");
 
                                     orderFound = true;
@@ -213,6 +233,14 @@ public class Main{
 
                                     if (registeredWorkOrder.getDiagnosis()!= null){
                                         System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
+                                    }
+
+                                    if (registeredWorkOrder.getService()!=null){
+                                        System.out.println("Serviço recomendado: " +registeredWorkOrder.getService());
+                                    }
+
+                                    if (registeredWorkOrder.getPartsNeeded()!=null){
+                                        System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
                                     }
 
                                     System.out.println("");
@@ -320,6 +348,14 @@ public class Main{
                                   System.out.println("Descreva o diagnóstico: ");
                                   String diagnosis = keyboard.nextLine();
                                   registeredWorkOrder.setDiagnosis(diagnosis);
+
+                                  System.out.println("Descreva o serviço recomendado: ");
+                                  String service = keyboard.nextLine();
+                                  registeredWorkOrder.setService(service);
+
+                                  System.out.println("Peças necessárias: ");
+                                  String partsNeeded = keyboard.nextLine();
+                                  registeredWorkOrder.setPartsNeeded(partsNeeded);
                               }
                           }
 
