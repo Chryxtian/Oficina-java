@@ -1,5 +1,7 @@
 package br.com.oficina;
 
+import java.math.BigDecimal;
+
 public class WorkOrder {
 
         private Vehicle vehicle;
@@ -9,6 +11,7 @@ public class WorkOrder {
         private String diagnosis;
         private String service;
         private String partsNeeded;
+        private BigDecimal price;
 
 
 
@@ -68,5 +71,13 @@ public class WorkOrder {
 
         public void setPartsNeeded(String partsNeeded) {
             this.partsNeeded = partsNeeded;
+        }
+
+        public BigDecimal getPrice(){
+            return price;
+        }
+
+        public void setPrice(BigDecimal price){
+            this.price = price;
         }
 }

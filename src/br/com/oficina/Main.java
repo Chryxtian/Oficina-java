@@ -1,5 +1,6 @@
 package br.com.oficina;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -129,6 +130,10 @@ public class Main{
                                     System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
                                 }
 
+                                if (registeredWorkOrder.getPrice()!=null){
+                                    System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
+                                }
+
                                 System.out.println(" ");
 
 
@@ -183,6 +188,10 @@ public class Main{
 
                                     if (registeredWorkOrder.getPartsNeeded()!=null){
                                         System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
+                                    }
+
+                                    if (registeredWorkOrder.getPrice()!=null){
+                                        System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
                                     }
 
                                     System.out.println("");
@@ -241,6 +250,10 @@ public class Main{
 
                                     if (registeredWorkOrder.getPartsNeeded()!=null){
                                         System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
+                                    }
+
+                                    if (registeredWorkOrder.getPrice()!=null){
+                                        System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
                                     }
 
                                     System.out.println("");
@@ -341,21 +354,46 @@ public class Main{
                           }
 
                           if (newStatus != null) {
-                              registeredWorkOrder.setStatus(newStatus);
-                              System.out.println("Status alterado para: " + newStatus);
 
-                              if (newStatus.equals("Em diagnóstico")) {
-                                  System.out.println("Descreva o diagnóstico: ");
-                                  String diagnosis = keyboard.nextLine();
-                                  registeredWorkOrder.setDiagnosis(diagnosis);
+                              boolean missingDiagnosis =
+                                      registeredWorkOrder.getDiagnosis() == null
+                                              || registeredWorkOrder.getDiagnosis().isBlank();
 
-                                  System.out.println("Descreva o serviço recomendado: ");
-                                  String service = keyboard.nextLine();
-                                  registeredWorkOrder.setService(service);
+                              boolean missingService =
+                                      registeredWorkOrder.getService() == null
+                                              || registeredWorkOrder.getService().isBlank();
 
-                                  System.out.println("Peças necessárias: ");
-                                  String partsNeeded = keyboard.nextLine();
-                                  registeredWorkOrder.setPartsNeeded(partsNeeded);
+                              if (newStatus.equalsIgnoreCase("Aguardando aprovação")
+                                    && (missingDiagnosis || missingService)){
+
+                                  System.out.println("Status não alterado, informe diagnóstico e serviço necessário primeiro.");
+
+                              }else {
+
+                                  registeredWorkOrder.setStatus(newStatus);
+                                  System.out.println("Status alterado para: " +newStatus);
+
+                                  if (newStatus.equalsIgnoreCase("Em diagnóstico")) {
+                                      System.out.println("Descreva o diagnóstico: ");
+                                      String diagnosis = keyboard.nextLine();
+                                      registeredWorkOrder.setDiagnosis(diagnosis);
+
+                                      System.out.println("Descreva o serviço recomendado: ");
+                                      String service = keyboard.nextLine();
+                                      registeredWorkOrder.setService(service);
+
+                                      System.out.println("Peças necessárias: ");
+                                      String partsNeeded = keyboard.nextLine();
+                                      registeredWorkOrder.setPartsNeeded(partsNeeded);
+                                  }
+
+                                  if (newStatus.equalsIgnoreCase("Aguardando aprovação")) {
+                                      System.out.println("Valor do orçamento: R$ ");
+                                      BigDecimal price = keyboard.nextBigDecimal();
+                                      keyboard.nextLine();
+
+                                      registeredWorkOrder.setPrice(price);
+                                  }
                               }
                           }
 
@@ -370,7 +408,7 @@ public class Main{
 
                   }
 
-                  System.out.println("Deseja atualizar outra ordem? (S/N): ");
+                  System.out.println("Deseja atualizar uma ordem serviço? (S/N): ");
                   answerUpdate = keyboard.nextLine();
 
 
