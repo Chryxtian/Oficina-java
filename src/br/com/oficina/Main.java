@@ -368,7 +368,14 @@ public class Main{
 
                                   System.out.println("Status não alterado, informe diagnóstico e serviço necessário primeiro.");
 
-                              }else {
+                              }else if (
+                                      (newStatus.equalsIgnoreCase("Aprovada")
+                                      || newStatus.equalsIgnoreCase("Orçamento recusado"))
+                                              && !registeredWorkOrder.getStatus().equalsIgnoreCase("Aguardando aprovação"))
+                                {
+                                  System.out.println("A ordem precis estar com status 'aguardando aprovação' para registrar a decisão do cliente");
+
+                                }else{
 
                                   registeredWorkOrder.setStatus(newStatus);
                                   System.out.println("Status alterado para: " +newStatus);
