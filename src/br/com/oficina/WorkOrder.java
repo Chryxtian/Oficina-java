@@ -12,6 +12,7 @@ public class WorkOrder {
         private String service;
         private String partsNeeded;
         private BigDecimal price;
+        private boolean customerNotified;
 
 
 
@@ -79,5 +80,13 @@ public class WorkOrder {
 
         public void setPrice(BigDecimal price){
             this.price = price;
+        }
+
+        public boolean isCustomerNotified(){
+            return customerNotified;
+        }
+
+        public void setCustomerNotified(boolean customerNotified){
+            this.customerNotified = customerNotified;
         }
 }

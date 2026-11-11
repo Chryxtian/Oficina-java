@@ -25,6 +25,7 @@ public class Main{
         System.out.println("1 - Cadastrar cliente");
         System.out.println("2 - Consultar ordem de serviço");
         System.out.println("3 - Atualizar ordem de serviço");
+        System.out.println("4 - Registrar aviso ao cliente");
         System.out.println("0 - Sair");
         option = keyboard.nextInt();
         keyboard.nextLine();
@@ -63,6 +64,7 @@ public class Main{
 
                     Customer customer = new Customer(name, phone);
                     customers.add(customer);
+
 
                     Vehicle vehicle = new Vehicle(licensePlate, brand, model, year, customer);
                     vehicles.add(vehicle);
@@ -183,9 +185,9 @@ public class Main{
                                         System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
                                     }
 
-                                    if (registeredWorkOrder.getService()!=null){
+                                    if (registeredWorkOrder.getService()!=null)
                                         System.out.println("Serviço recomendado: " +registeredWorkOrder.getService());
-                                    }
+
 
                                     if (registeredWorkOrder.getPartsNeeded()!=null){
                                         System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
@@ -195,7 +197,7 @@ public class Main{
                                         System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
                                     }
 
-                                    System.out.println("");
+                                    System.out.print(" ");
 
                                     orderFound = true;
                                     break;
@@ -257,7 +259,7 @@ public class Main{
                                         System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
                                     }
 
-                                    System.out.println("");
+                                    System.out.print(" ");
 
                                     customerFound = true;
 
@@ -473,6 +475,47 @@ public class Main{
               }while (answerUpdate.equalsIgnoreCase("s"));
               break;
 
+
+
+            case 4:
+                System.out.println("Digite o número da ordem: ");
+                int notificationOrderNumber = keyboard.nextInt();
+                keyboard.nextLine();
+
+                boolean notificationOrderFound = false;
+
+                for (WorkOrder registeredWorkOrder : workOrders){
+                    if (registeredWorkOrder.getNumber() == notificationOrderNumber){
+                        notificationOrderFound = true;
+
+                        if (registeredWorkOrder.getStatus().equalsIgnoreCase("Concluída")){
+                            System.out.println("O cliente foi avisado sobre a conclusão? (S/N)");
+                            String notificationAnswer = keyboard.nextLine();
+
+                            if (notificationAnswer.equalsIgnoreCase("s")){
+                                registeredWorkOrder.setCustomerNotified(true);
+                                System.out.println("Aviso registrado como enviado.");
+
+                            }else if (notificationAnswer.equalsIgnoreCase("n")){
+                                System.out.println("Aviso pendente.");
+
+                            }else {
+                                System.out.println("Resposta inválida");
+                            }
+
+
+                        }else {
+                            System.out.println("O aviso só pode ser enviado após a conclusão da ordem. Para alterar staus utilize a opção 3.");
+
+                        }
+
+                        break;
+                    }
+                }
+                if (!notificationOrderFound){
+                    System.out.println("Ordem não encontrada.");
+                }
+                break;
 
 
             case 0:
