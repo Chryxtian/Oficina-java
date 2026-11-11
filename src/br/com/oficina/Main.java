@@ -1,6 +1,7 @@
 package br.com.oficina;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -369,13 +370,53 @@ public class Main{
                                   System.out.println("Status não alterado, informe diagnóstico e serviço necessário primeiro.");
 
                               }else if (
+                                      newStatus.equalsIgnoreCase("Aguardando aprovação")
+                                      && registeredWorkOrder.getStatus().equalsIgnoreCase("Aprovada")
+                              ){
+                                  System.out.println("O orçamento já foi aprovado, deseja revisá-lo? (S/N)");
+                                  String revisionAnswer = keyboard.nextLine();
+
+                                  if (revisionAnswer.equalsIgnoreCase("s")) {
+
+                                      System.out.println("Novo valor do orçamento: ");
+                                      BigDecimal revisedPrice = keyboard.nextBigDecimal();
+                                      keyboard.nextLine();
+
+                                      registeredWorkOrder.setPrice(revisedPrice);
+                                      registeredWorkOrder.setStatus("Aguardando aprovação");
+
+                                      System.out.println("Orçamento revisao, aguardando nova aprovação.");
+
+                                  }else {
+                                      System.out.println("Revisão cancelada, status permanece: " +registeredWorkOrder.getStatus());
+                                  }
+
+
+
+
+
+                              }else if (
                                       (newStatus.equalsIgnoreCase("Aprovada")
                                       || newStatus.equalsIgnoreCase("Orçamento recusado"))
                                               && !registeredWorkOrder.getStatus().equalsIgnoreCase("Aguardando aprovação"))
                                 {
                                   System.out.println("A ordem precis estar com status 'aguardando aprovação' para registrar a decisão do cliente");
 
-                                }else{
+                                }else if (
+                                      newStatus.equalsIgnoreCase("Em execução")
+                                      && !registeredWorkOrder.getStatus().equalsIgnoreCase("Aprovada")
+
+                              ){
+                                  System.out.println("A ordem precisa estar aprovada para iniciar a execução.");
+
+                              }else if (
+                                      newStatus.equalsIgnoreCase("Aguardando aprovação")
+                                      && !registeredWorkOrder.getStatus().equalsIgnoreCase("Em diagnóstico")
+
+                              ){
+                                  System.out.println("A ordem precisa estar em diagnóstico antes de ir para aprovação. ");
+
+                              }else{
 
                                   registeredWorkOrder.setStatus(newStatus);
                                   System.out.println("Status alterado para: " +newStatus);
@@ -395,7 +436,7 @@ public class Main{
                                   }
 
                                   if (newStatus.equalsIgnoreCase("Aguardando aprovação")) {
-                                      System.out.println("Valor do orçamento: R$ ");
+                                      System.out.print("Valor do orçamento: R$ ");
                                       BigDecimal price = keyboard.nextBigDecimal();
                                       keyboard.nextLine();
 
