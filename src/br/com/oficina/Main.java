@@ -410,6 +410,16 @@ public class Main{
                                   System.out.println("A ordem precisa estar aprovada para iniciar a execução.");
 
                               }else if (
+                                      newStatus.equalsIgnoreCase("Concluída")
+                                      && !registeredWorkOrder.getStatus().equalsIgnoreCase("Em execução")
+
+                              ){
+                                  System.out.println("A ordem precisa estar em execução para ser concluída.");
+
+
+
+
+                              }else if (
                                       newStatus.equalsIgnoreCase("Aguardando aprovação")
                                       && !registeredWorkOrder.getStatus().equalsIgnoreCase("Em diagnóstico")
 
