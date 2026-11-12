@@ -27,6 +27,13 @@ public class Main{
         System.out.println("3 - Atualizar ordem de serviço");
         System.out.println("4 - Registrar aviso ao cliente");
         System.out.println("0 - Sair");
+
+        while (!keyboard.hasNextInt()){
+            System.out.println ("Entrada inválida, digite um número do menu.");
+            keyboard.nextLine();
+
+        }
+
         option = keyboard.nextInt();
         keyboard.nextLine();
 
@@ -44,6 +51,12 @@ public class Main{
                     System.out.print("Telefone: ");
                     String phone = keyboard.nextLine();
 
+                    while (!phone.matches("[0-9]+") || phone.length() != 11 && phone.length() != 10){
+                        System.out.println("Apenas números são válidos");
+                        phone = keyboard.nextLine();
+
+                    }
+
                     System.out.print("Marca do veículo: ");
                     String brand = keyboard.nextLine();
 
@@ -51,11 +64,21 @@ public class Main{
                     String model = keyboard.nextLine();
 
                     System.out.print("Placa do veículo: ");
-                    String licensePlate = keyboard.nextLine();
+                    String licensePlate = keyboard.nextLine().trim().replace("-","");
+
+                    while (licensePlate.length() != 7){
+                        System.out.println("A placa deve ter 7 caracteres, digite novamente: ");
+                        licensePlate = keyboard.nextLine().trim().replace("-","");
+                    }
+
 
                     System.out.print("Ano do veículo: ");
-                    int year = keyboard.nextInt();
 
+                    while (!keyboard.hasNextInt()){
+                        System.out.println("Apenas números são válidos.");
+                        keyboard.nextLine();
+                    }
+                    int year = keyboard.nextInt();
                     keyboard.nextLine();
 
                     System.out.print("Relato do cliente: ");
@@ -161,6 +184,13 @@ public class Main{
 
                         do {
                             System.out.println("Numero da ordem: ");
+
+                            while (!keyboard.hasNextInt()){
+                                System.out.println("Entrada inválida. Digite o número da ordem.");
+                                keyboard.nextLine();
+
+                            }
+
                             int orderNumber = keyboard.nextInt();
                             keyboard.nextLine();
 
@@ -302,6 +332,11 @@ public class Main{
               do {
 
                   System.out.println("Digite o número da ordem ");
+
+                  while (!keyboard.hasNextInt()){
+                      System.out.println("Entrada inválida. Digite o número da ordem.");
+                      keyboard.nextLine();
+                  }
                   int selectedOrderNumber = keyboard.nextInt();
                   keyboard.nextLine();
 
