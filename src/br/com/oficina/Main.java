@@ -48,11 +48,16 @@ public class Main{
                     System.out.print("Nome: ");
                     String name = keyboard.nextLine();
 
+                    while (name.isBlank()){
+                        System.out.println("O nome precisa ser informado, digite novamente: ");
+                        name = keyboard.nextLine();
+                    }
+
                     System.out.print("Telefone: ");
                     String phone = keyboard.nextLine();
 
                     while (!phone.matches("[0-9]+") || phone.length() != 11 && phone.length() != 10){
-                        System.out.println("Apenas números são válidos");
+                        System.out.println("Apenas números são válidos e deve conter 10 ou 11 dígitos..");
                         phone = keyboard.nextLine();
 
                     }
@@ -60,29 +65,53 @@ public class Main{
                     System.out.print("Marca do veículo: ");
                     String brand = keyboard.nextLine();
 
+                    while (brand.isBlank()){
+                        System.out.println("A marca do veículo deve ser informada, digite novamente: ");
+                        brand = keyboard.nextLine();
+                    }
+
                     System.out.print("Modelo do veículo: ");
                     String model = keyboard.nextLine();
 
-                    System.out.print("Placa do veículo: ");
-                    String licensePlate = keyboard.nextLine().trim().replace("-","");
+                    while (model.isBlank()){
+                        System.out.println("O modelo do veículo deve ser informado, digite novamente: ");
+                        model = keyboard.nextLine();
+                    }
 
-                    while (licensePlate.length() != 7){
-                        System.out.println("A placa deve ter 7 caracteres, digite novamente: ");
-                        licensePlate = keyboard.nextLine().trim().replace("-","");
+
+                    System.out.print("Placa do veículo: ");
+                    String licensePlate = keyboard.nextLine().trim().replace("-","").toUpperCase();
+
+                    String oldPlate = "[A-Z]{3}[0-9]{4} "; // 3 letras e 4 números
+                    String mercosulPlate = "[A-Z]{3}[0-9][A-Z0-9][0-9]{2}"; // placa mercosul
+
+                    while (!licensePlate.matches(oldPlate) && !licensePlate.matches(mercosulPlate)){
+                        System.out.println("Formato inválido");
+                        licensePlate = keyboard.nextLine().trim().replace("-","").toUpperCase();
                     }
 
 
                     System.out.print("Ano do veículo: ");
+                    String yearInput = keyboard.nextLine();
 
-                    while (!keyboard.hasNextInt()){
-                        System.out.println("Apenas números são válidos.");
-                        keyboard.nextLine();
+                    while (!yearInput.matches("\\d{4}")){
+                        System.out.println("O ano deve conter 4 dígitos.");
+                        yearInput = keyboard.nextLine();
                     }
-                    int year = keyboard.nextInt();
-                    keyboard.nextLine();
+
+                    int year = Integer.parseInt(yearInput);
+
+
+
+
 
                     System.out.print("Relato do cliente: ");
                     String complaint = keyboard.nextLine();
+
+                    while (complaint.isBlank()){
+                        System.out.println("Relato precisa ser informado, digite novamente: " );
+                        complaint = keyboard.nextLine();
+                    }
 
 
                     Customer customer = new Customer(name, phone);
@@ -113,6 +142,7 @@ public class Main{
 
                 int consultaOption;
 
+
                 do {
 
                     System.out.println("Consultar ordens de serviço");
@@ -121,6 +151,11 @@ public class Main{
                     System.out.println("3 - Buscar por nome cliente");
                     System.out.println("4 - Menu inicial");
 
+                    while (!keyboard.hasNextInt()){
+                        System.out.println("Entrada inválida, escolha uma das opções disponiveis.");
+                        keyboard.nextLine();
+                    }
+
                     consultaOption = keyboard.nextInt();
                     keyboard.nextLine();
 
@@ -128,64 +163,70 @@ public class Main{
 
                     case 1:
 
+                        if (workOrders.isEmpty()){
+                            System.out.println("Nenhuma ordem cadastrada.");
+                        }else {
+
 
                             for (WorkOrder registeredWorkOrder : workOrders) {
                                 Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
 
 
+                                System.out.println("Proprietário: " + registeredVehicle.getOwner().getName());
+                                System.out.println("Telefone: " + registeredVehicle.getOwner().getPhone());
+                                System.out.println("Marca do veículo: " + registeredVehicle.getBrand());
+                                System.out.println("Modelo do veículo: " + registeredVehicle.getModel());
+                                System.out.println("Placa do veículo: " + registeredVehicle.getLicensePlate());
+                                System.out.println("Ano do veículo: " + registeredVehicle.getYear());
+                                System.out.println("Relato do cliente: " + registeredWorkOrder.getComplaint());
+                                System.out.println("Status da ordem: " + registeredWorkOrder.getStatus());
+                                System.out.println("Número da ordem: " + registeredWorkOrder.getNumber());
 
-                                System.out.println("Proprietário: " +registeredVehicle.getOwner().getName());
-                                System.out.println("Telefone: " +registeredVehicle.getOwner().getPhone());
-                                System.out.println("Marca do veículo: " +registeredVehicle.getBrand());
-                                System.out.println("Modelo do veículo: " +registeredVehicle.getModel());
-                                System.out.println("Placa do veículo: " +registeredVehicle.getLicensePlate());
-                                System.out.println("Ano do veículo: " +registeredVehicle.getYear());
-                                System.out.println("Relato do cliente: " +registeredWorkOrder.getComplaint());
-                                System.out.println("Status da ordem: " +registeredWorkOrder.getStatus());
-                                System.out.println("Número da ordem: " +registeredWorkOrder.getNumber());
-
-                                if (registeredWorkOrder.getDiagnosis()!= null){
-                                    System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
+                                if (registeredWorkOrder.getDiagnosis() != null) {
+                                    System.out.println("Diagnóstico: " + registeredWorkOrder.getDiagnosis());
                                 }
 
-                                if (registeredWorkOrder.getService()!=null){
-                                    System.out.println("Serviço recomendando: " +registeredWorkOrder.getService());
+                                if (registeredWorkOrder.getService() != null) {
+                                    System.out.println("Serviço recomendando: " + registeredWorkOrder.getService());
                                 }
 
-                                if (registeredWorkOrder.getPartsNeeded()!=null){
-                                    System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
+                                if (registeredWorkOrder.getPartsNeeded() != null) {
+                                    System.out.println("Peças necessárias: " + registeredWorkOrder.getPartsNeeded());
                                 }
 
-                                if (registeredWorkOrder.getPrice()!=null){
-                                    System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
+                                if (registeredWorkOrder.getPrice() != null) {
+                                    System.out.println("Valor do orçamento: R$ " + registeredWorkOrder.getPrice());
                                 }
 
                                 System.out.println(" ");
 
 
-                            }
 
+                            }
                             System.out.println("Deseja fazer outra busca? (S/N): ");
                             String answerListAgain = keyboard.nextLine();
 
-                                if (answerListAgain.equalsIgnoreCase("n")){
-                                    consultaOption = 4;
-                                }
-
-
-
+                            if (answerListAgain.equalsIgnoreCase("n")){
+                                consultaOption = 4;
+                            }
+                        }
 
 
                         break;
 
+
                     case 2:
                         String answerFindNumber;
+
+                        if (workOrders.isEmpty()){
+                            System.out.println("Nenhuma ordem cadastrada.");
+                        }else {
 
 
                         do {
                             System.out.println("Numero da ordem: ");
 
-                            while (!keyboard.hasNextInt()){
+                            while (!keyboard.hasNextInt()) {
                                 System.out.println("Entrada inválida. Digite o número da ordem.");
                                 keyboard.nextLine();
 
@@ -211,20 +252,20 @@ public class Main{
                                     System.out.println("Status: " + registeredWorkOrder.getStatus());
                                     System.out.println("Número da ordem: " + registeredWorkOrder.getNumber());
 
-                                    if (registeredWorkOrder.getDiagnosis()!= null){
-                                        System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
+                                    if (registeredWorkOrder.getDiagnosis() != null) {
+                                        System.out.println("Diagnóstico: " + registeredWorkOrder.getDiagnosis());
                                     }
 
-                                    if (registeredWorkOrder.getService()!=null)
-                                        System.out.println("Serviço recomendado: " +registeredWorkOrder.getService());
+                                    if (registeredWorkOrder.getService() != null)
+                                        System.out.println("Serviço recomendado: " + registeredWorkOrder.getService());
 
 
-                                    if (registeredWorkOrder.getPartsNeeded()!=null){
-                                        System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
+                                    if (registeredWorkOrder.getPartsNeeded() != null) {
+                                        System.out.println("Peças necessárias: " + registeredWorkOrder.getPartsNeeded());
                                     }
 
-                                    if (registeredWorkOrder.getPrice()!=null){
-                                        System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
+                                    if (registeredWorkOrder.getPrice() != null) {
+                                        System.out.println("Valor do orçamento: R$ " + registeredWorkOrder.getPrice());
                                     }
 
                                     System.out.print(" ");
@@ -232,84 +273,89 @@ public class Main{
                                     orderFound = true;
                                     break;
                                 }
-
-
-                            }
-                            if (!orderFound) {
-                                System.out.println("Ordem não encontrada.");
                             }
 
-                            System.out.println("Deseja buscar outra ordem ? (S/N)");
-                            answerFindNumber = keyboard.nextLine();
 
-                                if (answerFindNumber.equalsIgnoreCase("n")){
+                                if (!orderFound) {
+                                    System.out.println("Ordem não encontrada.");
+                                }
+
+                                System.out.println("Deseja buscar outra ordem ? (S/N)");
+                                answerFindNumber = keyboard.nextLine();
+
+                                if (answerFindNumber.equalsIgnoreCase("n")) {
                                     consultaOption = 4;
                                 }
 
 
-                        }while(answerFindNumber.equalsIgnoreCase("s"));
-                        break;
+                            }while (answerFindNumber.equalsIgnoreCase("s")) ;
+
+                        }break;
 
 
                     case 3:
 
                         String answerNewSearch;
 
-                        do {
-                            System.out.print("Digite o nome do cliente: ");
+                        if (workOrders.isEmpty()){
+                            System.out.println("Nenhuma ordem cadastrada.");
+                        }else {
 
-                            boolean customerFound = false;
+                            do {
+                                System.out.print("Digite o nome do cliente: ");
 
-                            String nameCustomerSearch = keyboard.nextLine();
+                                boolean customerFound = false;
 
-                            for (WorkOrder registeredWorkOrder : workOrders) {
-                                Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
-                                String registeredCustomerName = registeredVehicle.getOwner().getName();
+                                String nameCustomerSearch = keyboard.nextLine();
 
-                                if (registeredCustomerName.equalsIgnoreCase(nameCustomerSearch)) {
-                                    System.out.println("Nome: " + registeredCustomerName);
-                                    System.out.println("Número da ordem: " + registeredWorkOrder.getNumber());
-                                    System.out.println("Veículo: " + registeredVehicle.getModel());
-                                    System.out.println("Relato: " + registeredWorkOrder.getComplaint());
-                                    System.out.println("Status: " + registeredWorkOrder.getStatus());
+                                for (WorkOrder registeredWorkOrder : workOrders) {
+                                    Vehicle registeredVehicle = registeredWorkOrder.getVehicle();
+                                    String registeredCustomerName = registeredVehicle.getOwner().getName();
 
-                                    if (registeredWorkOrder.getDiagnosis()!= null){
-                                        System.out.println("Diagnóstico: " +registeredWorkOrder.getDiagnosis());
+                                    if (registeredCustomerName.equalsIgnoreCase(nameCustomerSearch)) {
+                                        System.out.println("Nome: " + registeredCustomerName);
+                                        System.out.println("Número da ordem: " + registeredWorkOrder.getNumber());
+                                        System.out.println("Veículo: " + registeredVehicle.getModel());
+                                        System.out.println("Relato: " + registeredWorkOrder.getComplaint());
+                                        System.out.println("Status: " + registeredWorkOrder.getStatus());
+
+                                        if (registeredWorkOrder.getDiagnosis() != null) {
+                                            System.out.println("Diagnóstico: " + registeredWorkOrder.getDiagnosis());
+                                        }
+
+                                        if (registeredWorkOrder.getService() != null) {
+                                            System.out.println("Serviço recomendado: " + registeredWorkOrder.getService());
+                                        }
+
+                                        if (registeredWorkOrder.getPartsNeeded() != null) {
+                                            System.out.println("Peças necessárias: " + registeredWorkOrder.getPartsNeeded());
+                                        }
+
+                                        if (registeredWorkOrder.getPrice() != null) {
+                                            System.out.println("Valor do orçamento: R$ " + registeredWorkOrder.getPrice());
+                                        }
+
+                                        System.out.print(" ");
+
+                                        customerFound = true;
+
                                     }
-
-                                    if (registeredWorkOrder.getService()!=null){
-                                        System.out.println("Serviço recomendado: " +registeredWorkOrder.getService());
-                                    }
-
-                                    if (registeredWorkOrder.getPartsNeeded()!=null){
-                                        System.out.println("Peças necessárias: " +registeredWorkOrder.getPartsNeeded());
-                                    }
-
-                                    if (registeredWorkOrder.getPrice()!=null){
-                                        System.out.println("Valor do orçamento: R$ "+registeredWorkOrder.getPrice());
-                                    }
-
-                                    System.out.print(" ");
-
-                                    customerFound = true;
 
                                 }
+                                if (!customerFound) {
+                                    System.out.println("Nenhuma ordem encontrada para esse cliente.");
+                                }
 
-                            }
-                            if (!customerFound) {
-                                System.out.println("Nenhuma ordem encontrada para esse cliente.");
-                            }
+                                System.out.println("Deseja fazer outra busca ? (S/N)");
+                                answerNewSearch = keyboard.nextLine();
 
-                            System.out.println("Deseja fazer outra busca ? (S/N)");
-                            answerNewSearch = keyboard.nextLine();
-
-                                if (answerNewSearch.equalsIgnoreCase("n")){
+                                if (answerNewSearch.equalsIgnoreCase("n")) {
                                     consultaOption = 4;
                                 }
 
 
-                        }while (answerNewSearch.equalsIgnoreCase("S"));
-                        break;
+                            } while (answerNewSearch.equalsIgnoreCase("S"));
+                        } break;
 
                     case 4:
                         System.out.println("Voltando ao menu inicial.");
@@ -356,6 +402,11 @@ public class Main{
                           System.out.println("5 - Em execução");
                           System.out.println("6 - Concluída");
 
+                          while (!keyboard.hasNextInt()){
+                              System.out.println("Entrada inválida, digite uma das opções disponiveis.");
+                              keyboard.nextLine();
+                          }
+
                           int statusOption = keyboard.nextInt();
                           keyboard.nextLine();
 
@@ -393,6 +444,8 @@ public class Main{
 
                           if (newStatus != null) {
 
+                              String currentStatus = registeredWorkOrder.getStatus();
+
                               boolean missingDiagnosis =
                                       registeredWorkOrder.getDiagnosis() == null
                                               || registeredWorkOrder.getDiagnosis().isBlank();
@@ -415,14 +468,31 @@ public class Main{
 
                                   if (revisionAnswer.equalsIgnoreCase("s")) {
 
-                                      System.out.println("Novo valor do orçamento: ");
-                                      BigDecimal revisedPrice = keyboard.nextBigDecimal();
+                                      BigDecimal revisedPrice;
+
+                                      do {
+                                          System.out.print("Novo valor do orçamento: R$ ");
+
+
+                                      while (!keyboard.hasNextBigDecimal()) {
+                                          System.out.println("Valor inválido, digite novamente: ");
+                                          keyboard.nextLine();
+                                          System.out.println("Novo valor do orçamento: R$ ");
+                                      }
+
+                                      revisedPrice = keyboard.nextBigDecimal();
                                       keyboard.nextLine();
+
+                                      if (revisedPrice.compareTo( BigDecimal.ZERO) <= 0){
+                                          System.out.println("O orçamento deve ser maior que zero. ");
+                                      }
+
+                                  }while (revisedPrice.compareTo(BigDecimal.ZERO) <= 0 );
 
                                       registeredWorkOrder.setPrice(revisedPrice);
                                       registeredWorkOrder.setStatus("Aguardando aprovação");
 
-                                      System.out.println("Orçamento revisao, aguardando nova aprovação.");
+                                      System.out.println("Orçamento revisado, aguardando nova aprovação.");
 
                                   }else {
                                       System.out.println("Revisão cancelada, status permanece: " +registeredWorkOrder.getStatus());
@@ -437,7 +507,7 @@ public class Main{
                                       || newStatus.equalsIgnoreCase("Orçamento recusado"))
                                               && !registeredWorkOrder.getStatus().equalsIgnoreCase("Aguardando aprovação"))
                                 {
-                                  System.out.println("A ordem precis estar com status 'aguardando aprovação' para registrar a decisão do cliente");
+                                  System.out.println("A ordem precisa estar com status 'aguardando aprovação' para registrar a decisão do cliente");
 
                                 }else if (
                                       newStatus.equalsIgnoreCase("Em execução")
@@ -456,6 +526,9 @@ public class Main{
 
 
 
+                              }else if (newStatus.equalsIgnoreCase(registeredWorkOrder.getStatus())){
+                                  System.out.println("A ordem já está com esse status.");
+
                               }else if (
                                       newStatus.equalsIgnoreCase("Aguardando aprovação")
                                       && !registeredWorkOrder.getStatus().equalsIgnoreCase("Em diagnóstico")
@@ -463,12 +536,25 @@ public class Main{
                               ){
                                   System.out.println("A ordem precisa estar em diagnóstico antes de ir para aprovação. ");
 
-                              }else{
+
+
+                              }else if (
+                                      newStatus.equalsIgnoreCase("Em diagnóstico")
+                                        && !currentStatus.equalsIgnoreCase("Aberta")
+                                        && !currentStatus.equalsIgnoreCase("Em diagnóstico")
+                                        && !currentStatus.equalsIgnoreCase("Aguardando aprovação")
+                              ){
+                                  System.out.println("A ordem só pode ir para diagnóstico quanto estiver aberta ou aguardando aprovação.");
+
+
+                                } else{
 
                                   registeredWorkOrder.setStatus(newStatus);
                                   System.out.println("Status alterado para: " +newStatus);
 
                                   if (newStatus.equalsIgnoreCase("Em diagnóstico")) {
+                                      registeredWorkOrder.setPrice(null);
+
                                       System.out.println("Descreva o diagnóstico: ");
                                       String diagnosis = keyboard.nextLine();
                                       registeredWorkOrder.setDiagnosis(diagnosis);
@@ -480,12 +566,31 @@ public class Main{
                                       System.out.println("Peças necessárias: ");
                                       String partsNeeded = keyboard.nextLine();
                                       registeredWorkOrder.setPartsNeeded(partsNeeded);
+
+                                      System.out.println("Diagnóstico registrado.");
                                   }
 
                                   if (newStatus.equalsIgnoreCase("Aguardando aprovação")) {
-                                      System.out.print("Valor do orçamento: R$ ");
-                                      BigDecimal price = keyboard.nextBigDecimal();
-                                      keyboard.nextLine();
+
+                                      BigDecimal price;
+
+                                      do {
+                                          System.out.println("Valor do orçamento: R$ ");
+
+                                          while (!keyboard.hasNextBigDecimal()){
+                                              System.out.println("Valor inválido, digite novamente: ");
+                                              keyboard.nextLine();
+                                              System.out.println("Valor do orçamento: R$ ");
+                                          }
+
+                                          price = keyboard.nextBigDecimal();
+                                          keyboard.nextLine();
+
+                                          if (price.compareTo(BigDecimal.ZERO) <= 0){
+                                              System.out.println("O orçamento deve ser maior que zero.");
+                                          }
+
+                                      }while (price.compareTo(BigDecimal.ZERO) <= 0 );
 
                                       registeredWorkOrder.setPrice(price);
                                   }
@@ -514,6 +619,12 @@ public class Main{
 
             case 4:
                 System.out.println("Digite o número da ordem: ");
+
+                while (!keyboard.hasNextInt()){
+                    System.out.println("Entrada inválida, digite um número de ordem.");
+                    keyboard.nextLine();
+                }
+
                 int notificationOrderNumber = keyboard.nextInt();
                 keyboard.nextLine();
 
@@ -540,7 +651,7 @@ public class Main{
 
 
                         }else {
-                            System.out.println("O aviso só pode ser enviado após a conclusão da ordem. Para alterar staus utilize a opção 3.");
+                            System.out.println("O aviso só pode ser enviado após a conclusão da ordem. Para alterar status utilize a opção 3.");
 
                         }
 
