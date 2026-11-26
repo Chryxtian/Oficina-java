@@ -1,18 +1,28 @@
 package br.com.oficina;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 public class Main{
+
+    private static String capitalizeFirstLetter(String value){
+        String text = value.trim();
+
+        if (text.isEmpty()){
+            return text;
+        }
+        return text.substring(0, 1).toUpperCase()+ text.substring(1);
+
+    }
     public static void main(String[] args) {
 
         Scanner keyboard = new Scanner(System.in);
         String answer;
 
 
-        System.out.println("-----Sistema da oficina-----");
+        System.out.println("-----SESH GARAGE-----");
 
         ArrayList<Customer> customers = new ArrayList<>();
         ArrayList<Vehicle> vehicles = new ArrayList<>();
@@ -27,6 +37,7 @@ public class Main{
         System.out.println("3 - Atualizar ordem de serviço");
         System.out.println("4 - Registrar aviso ao cliente");
         System.out.println("0 - Sair");
+        System.out.println("¸.•*´¨`*•.¸¸.•*´¨`*•.¸¸.•*´¨`*•.¸¸.•*´¨`*•.¸");
 
         while (!keyboard.hasNextInt()){
             System.out.println ("Entrada inválida, digite um número do menu.");
@@ -51,13 +62,14 @@ public class Main{
                     while (name.isBlank()){
                         System.out.println("O nome precisa ser informado, digite novamente: ");
                         name = keyboard.nextLine();
-                    }
+
+                    } name = capitalizeFirstLetter(name);
 
                     System.out.print("Telefone: ");
                     String phone = keyboard.nextLine();
 
                     while (!phone.matches("[0-9]+") || phone.length() != 11 && phone.length() != 10){
-                        System.out.println("Apenas números são válidos e deve conter 10 ou 11 dígitos..");
+                        System.out.println("Apenas números são válidos e deve conter 10 (fixo) ou 11 (celular) dígitos..");
                         phone = keyboard.nextLine();
 
                     }
@@ -68,7 +80,8 @@ public class Main{
                     while (brand.isBlank()){
                         System.out.println("A marca do veículo deve ser informada, digite novamente: ");
                         brand = keyboard.nextLine();
-                    }
+
+                    } brand = capitalizeFirstLetter(brand);
 
                     System.out.print("Modelo do veículo: ");
                     String model = keyboard.nextLine();
@@ -76,7 +89,8 @@ public class Main{
                     while (model.isBlank()){
                         System.out.println("O modelo do veículo deve ser informado, digite novamente: ");
                         model = keyboard.nextLine();
-                    }
+
+                    } model = capitalizeFirstLetter(model);
 
 
                     System.out.print("Placa do veículo: ");
@@ -86,7 +100,7 @@ public class Main{
                     String mercosulPlate = "[A-Z]{3}[0-9][A-Z0-9][0-9]{2}"; // placa mercosul
 
                     while (!licensePlate.matches(oldPlate) && !licensePlate.matches(mercosulPlate)){
-                        System.out.println("Formato inválido");
+                        System.out.println("Formato inválido, placa deve conter 7 caracteres.");
                         licensePlate = keyboard.nextLine().trim().replace("-","").toUpperCase();
                     }
 
@@ -115,14 +129,48 @@ public class Main{
 
 
                     Customer customer = new Customer(name, phone);
-                    customers.add(customer);
+
+                    int customerId;
+                    try {
+                        customerId = new CustomerDAO().save(customer);
+                        System.out.println("Cadastro do cliente salvo no banco com ID: " +customerId);
+                        customers.add(customer);
+                    }catch (SQLException e){
+                        System.out.println("Não foi possível salvar o cadastro do cliente no banco.");
+                        e.printStackTrace();
+                        break;
+                    }
 
 
                     Vehicle vehicle = new Vehicle(licensePlate, brand, model, year, customer);
-                    vehicles.add(vehicle);
+
+                    int vehicleId;
+                    try {
+                        vehicleId = new VehicleDAO().save(vehicle,customerId);
+                        System.out.println("Veículo salvo com o ID: " +vehicleId);
+                        vehicles.add(vehicle);
+                    }catch (SQLException e){
+                        System.out.println("Não foi possível salvar o veículo no banco.");
+                        e.printStackTrace();
+                        break;
+                    }
 
                     WorkOrder workOrder = new WorkOrder(nextWorkOrderNumber, vehicle, complaint);
-                    workOrders.add(workOrder);
+
+                     int workOrderId;
+                     try {
+                         workOrderId = new WorkOrderDAO().save(vehicleId, workOrder.getComplaint(),workOrder.getStatus());
+
+                         workOrder.setNumber(workOrderId);
+                         workOrders.add(workOrder);
+
+                         System.out.println("Ordem salva com o ID: " + workOrderId);
+
+                     }catch (SQLException e){
+                         System.out.println("Não foi possível salvar a ordem no banco.");
+                         e.printStackTrace();
+                         break;
+                     }
 
                     System.out.println("Cadastro concluído.");
                     System.out.println("Número da ordem: " +workOrder.getNumber());
@@ -439,7 +487,7 @@ public class Main{
                                   break;
 
                               default:
-                                  System.out.println("Opção inválida, status não alterado");
+                                  System.out.println("Opção inválida, status não alterado.");
                           }
 
                           if (newStatus != null) {
@@ -507,7 +555,7 @@ public class Main{
                                       || newStatus.equalsIgnoreCase("Orçamento recusado"))
                                               && !registeredWorkOrder.getStatus().equalsIgnoreCase("Aguardando aprovação"))
                                 {
-                                  System.out.println("A ordem precisa estar com status 'aguardando aprovação' para registrar a decisão do cliente");
+                                  System.out.println("A ordem precisa estar com status 'aguardando aprovação' para registrar a decisão do cliente.");
 
                                 }else if (
                                       newStatus.equalsIgnoreCase("Em execução")
@@ -544,7 +592,7 @@ public class Main{
                                         && !currentStatus.equalsIgnoreCase("Em diagnóstico")
                                         && !currentStatus.equalsIgnoreCase("Aguardando aprovação")
                               ){
-                                  System.out.println("A ordem só pode ir para diagnóstico quanto estiver aberta ou aguardando aprovação.");
+                                  System.out.println("A ordem só pode ir para diagnóstico quando estiver aberta ou aguardando aprovação.");
 
 
                                 } else{

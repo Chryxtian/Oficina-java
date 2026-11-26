@@ -45,6 +45,10 @@ public class WorkOrder {
             return number;
         }
 
+         public void setNumber(int Number){
+             this.number = number;
+         }
+
         public void setStatus(String status){
 
             this.status = status;
